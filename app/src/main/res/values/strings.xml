@@ -43,6 +43,8 @@
     <string name="pick_date">Pick date</string>
 
     <string name="class_type">Class type:</string>
+    <string name="delete_icon_description">Delete icon</string>
+    <string name="select_class_hours_button">Select Class Hours</string>
 
     <string-array name="class_type_values">
         <item>Lecture</item>
