@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">BPDC Timetable App</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="fab_option_1">Course</string>
+    <string name="fab_option_2">Reminder</string>
+    <string name="fab_option_3">Attendance</string>
+
+    <string name="title_1">Profile</string>
+    <string name="title_2">Timetable</string>
+    <string name="title_3">Reminders</string>
+    <string name="title_4">Courses</string>
+    <string name="title_5">Attendance</string>
+    <string name="title_6">Home</string>
+
+    <string name="nav_open">Open Navigation Drawer</string>
+    <string name="nav_close">Close Navigation Drawer</string>
+
+    <string name="course_name">Course name:</string>
+    <string name="add_course_button_text">Add course</string>
+    <string name="add_a_new_course">Add a new course</string>
+    <string name="instructor">Instructor:</string>
+    <string name="classes">Classes:</string>
+    <string name="evaluation_component_tv">Evaluation components: </string>
+    <string name="add_icon_description">Plus icon</string>
+
+    <string name="reminder_title">Title:</string>
+    <string name="add_reminder_button_text">Add reminder</string>
+    <string name="add_a_new_reminder">Add a new reminder</string>
+    
+    <string name="reminder_tags">Tags:</string>
+    <string name="all_day">All day</string>
+
+    <string name="pick_time">Pick time</string>
+    <string name="pick_date">Pick date</string>
+
+    <string name="class_type">Class type:</string>
+
+    <string-array name="class_type_values">
+        <item>Lecture</item>
+        <item>Tutorial</item>
+        <item>Lab</item>
+    </string-array>
+
+
+</resources>
