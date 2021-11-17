@@ -4,4 +4,6 @@
     <dimen name="standard_105">130dp</dimen>
     <dimen name="standard_155">195dp</dimen>
     <dimen name="title_size">24sp</dimen>
+    <dimen name="popup_padding">5dp</dimen>
+    <dimen name="popup_button_dimen">50dp</dimen>
 </resources>

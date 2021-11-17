@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="card_background">#C8CDD0</color>
+    <color name="popup_button">#C8CDD0</color>
 </resources>
