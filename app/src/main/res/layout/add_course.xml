@@ -107,7 +107,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:scrollbars="vertical"
                 app:layout_constraintTop_toBottomOf="@id/classes_section" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -123,35 +122,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluation_component_tv"
-                app:layout_constraintBottom_toTopOf="@id/recyclerViewEC"
+                app:layout_constraintBottom_toTopOf="@id/recyclerViewEval"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:id="@+id/button_add_eval_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:clickable="true"
                 android:contentDescription="@string/add_icon_description"
                 android:src="@drawable/add_icon"
-                app:layout_constraintBottom_toTopOf="@id/recyclerViewEC"
+                app:layout_constraintBottom_toTopOf="@id/recyclerViewEval"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewEC"
+                android:id="@+id/recyclerViewEval"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:scrollbars="vertical"
                 app:layout_constraintTop_toBottomOf="@id/evaluation_section" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
         <Button
             android:layout_width="match_parent"

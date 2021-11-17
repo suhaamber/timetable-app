@@ -52,6 +52,15 @@
         <item>Lab</item>
     </string-array>
 
+    <string name="eval_type">Evaluation type:</string>
+    <string name="select_eval_date_button">Select Evaluation Date</string>
+
+    <string-array name="eval_type_values">
+        <item>Mid-semester Test</item>
+        <item>Comprehensive Exam</item>
+        <item>Quiz</item>
+    </string-array>
+
     <string name="popup_done">Done</string>
 
     <string name="sunday">Sun</string>
