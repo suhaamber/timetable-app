@@ -3,7 +3,9 @@ package com.example.bpdctimetableapp;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,8 +18,8 @@ public class NewEvalCardAdapter extends RecyclerView.Adapter<NewEvalCardAdapter.
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
         void onDeleteClick(int position);
+        void onSetDateClick(int position, View view);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -26,22 +28,14 @@ public class NewEvalCardAdapter extends RecyclerView.Adapter<NewEvalCardAdapter.
 
     public static class NewEvalViewHolder extends RecyclerView.ViewHolder {
         public ImageButton deleteEvalCard;
+        public Button selectEvalDateButton;
+        public TextView dateTextView;
 
         public NewEvalViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             deleteEvalCard = itemView.findViewById(R.id.button_delete_eval_card);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener != null) {
-                        int position = getBindingAdapterPosition();
-                        if(position!= RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
-                        }
-                    }
-                }
-            });
+            selectEvalDateButton = itemView.findViewById(R.id.select_eval_date_button);
+            dateTextView = itemView.findViewById(R.id.eval_date_textview);
 
             deleteEvalCard.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -50,6 +44,18 @@ public class NewEvalCardAdapter extends RecyclerView.Adapter<NewEvalCardAdapter.
                         int position = getBindingAdapterPosition();
                         if(position != RecyclerView.NO_POSITION) {
                             listener.onDeleteClick(position);
+                        }
+                    }
+                }
+            });
+
+            selectEvalDateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null) {
+                        int position = getBindingAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            listener.onSetDateClick(position, v);
                         }
                     }
                 }
@@ -73,6 +79,10 @@ public class NewEvalCardAdapter extends RecyclerView.Adapter<NewEvalCardAdapter.
     @Override
     public void onBindViewHolder(@NonNull NewEvalViewHolder holder, int position) {
         NewEvalCard currentItem = newEvalCards.get(position);
+
+        holder.selectEvalDateButton.setText(currentItem.getButtonText());
+        holder.dateTextView.setText(currentItem.getEvalDate());
+
     }
 
     @Override

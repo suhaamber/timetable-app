@@ -3,6 +3,7 @@ package com.example.bpdctimetableapp;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,7 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onSelectClassClick(int position, View view);
         void onDeleteClick(int position);
     }
 
@@ -28,18 +29,20 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
     public static class NewCourseViewHolder extends RecyclerView.ViewHolder{
 
         public ImageButton deleteCourseCard;
+        public Button selectClassHours;
 
         public NewCourseViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             deleteCourseCard = itemView.findViewById(R.id.button_delete_course_card);
+            selectClassHours = itemView.findViewById(R.id.select_class_hours_button);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            selectClassHours.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
                         int position = getBindingAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
+                            listener.onSelectClassClick(position, v);
                         }
                     }
                 }

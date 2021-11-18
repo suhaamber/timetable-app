@@ -37,6 +37,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        FloatingActionButton fabAttendance = rootView.findViewById(R.id.fab_attendance);
+        fabAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAttendance(v);
+            }
+        });
+
         return rootView;
 
     }
@@ -49,6 +57,11 @@ public class HomeFragment extends Fragment {
     public void addReminder(View view) {
         Intent addReminderIntent = new Intent(getActivity(), AddReminder.class);
         startActivity(addReminderIntent);
+    }
+
+    public void addAttendance(View view) {
+        Intent addAttendanceIntent = new Intent(getActivity(), AddAttendance.class);
+        startActivity(addAttendanceIntent);
     }
 
 }
