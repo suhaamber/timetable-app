@@ -13,6 +13,9 @@
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/add_course.xml" value="0.2" />
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/add_reminder.xml" value="0.1871584699453552" />
+        <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/attendance_pending_card.xml" value="0.1871584699453552" />
+        <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/class_card.xml" value="0.1871584699453552" />
+        <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/course_card.xml" value="0.1871584699453552" />
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/fragment_attendance.xml" value="0.1793478260869565" />
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/fragment_courses.xml" value="0.1793478260869565" />
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/fragment_home.xml" value="0.15897435897435896" />
@@ -23,6 +26,7 @@
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/new_course_card.xml" value="0.1837431693989071" />
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/new_eval_card.xml" value="0.1871584699453552" />
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/popup_button.xml" value="0.1875" />
+        <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/reminder_card.xml" value="0.1871584699453552" />
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/layout/select_class_hours.xml" value="0.1875" />
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/menu/menu_main.xml" value="0.190625" />
         <entry key="..\:/suhaa/Documents/AndroidProjects/BPDCTimetableApp/app/src/main/res/menu/navigation_drawer.xml" value="0.25416666666666665" />

@@ -72,5 +72,15 @@
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
 
+    <string name="course_name_sample">Course name</string>
+    <string name="instructor_name_sample">Instructor name</string>
+    <string name="class_timing_sample">Class timing </string>
+    <string name="class_hours_sample">Class hours </string>
+    <string name="attendance_sample">Attendance </string>
+
+    <string name="reminder_title_sample">Reminder title</string>
+    <string name="tag_sample">Tag 1</string>
+    <string name="date_time_sample">Date and time </string>
+
 
 </resources>
