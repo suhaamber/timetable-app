@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +33,8 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
     private String setDate;
     private PopupWindow selectHoursPopup;
     private ScrollView parentView;
+    private Button addCourse;
+    private EditText courseNameET, instructorNameET;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +52,9 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
 
         addCourseCard = findViewById(R.id.button_add_course_card);
         addEvalCard = findViewById(R.id.button_add_eval_card);
+        addCourse = findViewById(R.id.button_add_course);
+        courseNameET = findViewById(R.id.course_name_et);
+        instructorNameET = findViewById(R.id.instructor_name_et);
 
         addCourseCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +67,26 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
             @Override
             public void onClick(View v) {
                 addNewEvalCard(v);
+            }
+        });
+
+        addCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CourseModel courseModel = null;
+                try {
+                    //add conditions to check whether row is empty or not AKA the edit text have text or not, else do not enter the information.
+                    courseModel = new CourseModel(-1, courseNameET.getText().toString(), instructorNameET.getText().toString());
+                    Toast.makeText(AddCourse.this, "Successfully created course!", Toast.LENGTH_LONG).show();
+                }
+                catch (Exception e) {
+                    Toast.makeText(AddCourse.this, "Error creating course.", Toast.LENGTH_LONG).show();
+                }
+
+                DatabaseHelper databaseHelper = new DatabaseHelper(AddCourse.this);
+                boolean success = databaseHelper.addOne(courseModel);
+                databaseHelper.close();
+
             }
         });
 
