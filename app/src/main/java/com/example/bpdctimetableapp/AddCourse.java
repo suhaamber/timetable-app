@@ -84,7 +84,7 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
                 }
 
                 DatabaseHelper databaseHelper = new DatabaseHelper(AddCourse.this);
-                boolean success = databaseHelper.addOne(courseModel);
+                boolean success = databaseHelper.addCourse(courseModel);
                 databaseHelper.close();
 
             }

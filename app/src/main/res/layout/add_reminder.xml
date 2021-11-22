@@ -34,6 +34,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:id="@+id/reminder_title_ET"
             android:layout_width="250dp"
             android:layout_height="match_parent"
             android:inputType="text"
@@ -59,6 +60,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:id="@+id/reminder_tags_ET"
             android:layout_width="250dp"
             android:layout_height="match_parent"
             android:inputType="text"
@@ -130,11 +132,12 @@
         android:layout_weight="1" />
 
     <Button
+        android:id="@+id/button_add_reminder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
         android:layout_marginBottom="20dp"
         android:text="@string/add_reminder_button_text"
-        android:textAlignment="center"/>
+        android:textAlignment="center" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.fragment.app.FragmentActivity;
@@ -16,8 +18,9 @@ import androidx.fragment.app.FragmentActivity;
 
 public class AddReminder extends FragmentActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    private Button pickTimeButton, pickDateButton;
+    private Button pickTimeButton, pickDateButton, addReminderButton;
     private TextView pickTimeTextView, pickDateTextView;
+    private EditText reminderTitleET, reminderTagsET;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +31,32 @@ public class AddReminder extends FragmentActivity implements DatePickerDialog.On
         pickDateButton = findViewById(R.id.pick_date_button);
         pickTimeTextView = findViewById(R.id.pick_time_tv);
         pickDateTextView = findViewById(R.id.pick_date_tv);
+        addReminderButton = findViewById(R.id.button_add_reminder);
+        reminderTitleET = findViewById(R.id.reminder_title_ET);
+        reminderTagsET = findViewById(R.id.reminder_tags_ET);
+
+        addReminderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReminderModel reminderModel = null;
+                ReminderTagModel reminderTagModel = null;
+
+                try {
+                    String reminderDateTime = pickDateTextView.getText().toString() +  pickTimeTextView.getText().toString();
+                    reminderModel = new ReminderModel(-1, reminderTitleET.getText().toString(), reminderDateTime);
+                    reminderTagModel = new ReminderTagModel(-1, reminderTagsET.getText().toString());
+                    Toast.makeText(AddReminder.this, "Successfully added reminder!" , Toast.LENGTH_LONG).show();
+                }
+                catch (Exception e) {
+                    Toast.makeText(AddReminder.this, "Error adding reminder." , Toast.LENGTH_LONG).show();
+                }
+
+                DatabaseHelper databaseHelper = new DatabaseHelper(AddReminder.this);
+                databaseHelper.addReminder(reminderModel);
+                databaseHelper.addReminderTags(reminderTagModel);
+                databaseHelper.close();
+            }
+        });
 
         pickDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
