@@ -3,8 +3,10 @@ package com.example.bpdctimetableapp;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,11 +32,13 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
 
         public ImageButton deleteCourseCard;
         public Button selectClassHours;
+        public Spinner spinner;
 
-        public NewCourseViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+        public NewCourseViewHolder(@NonNull View itemView, final OnItemClickListener listener, ArrayList<NewCourseCard> newCourseCards) {
             super(itemView);
             deleteCourseCard = itemView.findViewById(R.id.button_delete_course_card);
             selectClassHours = itemView.findViewById(R.id.select_class_hours_button);
+            spinner = itemView.findViewById(R.id.class_type_spinner);
 
             selectClassHours.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -59,6 +63,18 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
                     }
                 }
             });
+
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    newCourseCards.get(getBindingAdapterPosition()).setClassType(spinner.getItemAtPosition(position).toString());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    newCourseCards.get(getBindingAdapterPosition()).setClassType("Lecture");
+                }
+            });
         }
     }
 
@@ -66,7 +82,7 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
     @Override
     public NewCourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_course_card, parent, false);
-        NewCourseViewHolder newCourseViewHolder = new NewCourseViewHolder(v, mListener);
+        NewCourseViewHolder newCourseViewHolder = new NewCourseViewHolder(v, mListener, newCourseCards);
         return newCourseViewHolder;
     }
 

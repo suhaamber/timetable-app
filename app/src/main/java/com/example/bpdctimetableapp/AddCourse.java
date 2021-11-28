@@ -2,8 +2,10 @@ package com.example.bpdctimetableapp;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,20 +75,43 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
         addCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 CourseModel courseModel = null;
                 try {
                     //add conditions to check whether row is empty or not AKA the edit text have text or not, else do not enter the information.
                     courseModel = new CourseModel(-1, courseNameET.getText().toString(), instructorNameET.getText().toString());
-                    Toast.makeText(AddCourse.this, "Successfully created course!", Toast.LENGTH_LONG).show();
                 }
                 catch (Exception e) {
                     Toast.makeText(AddCourse.this, "Error creating course.", Toast.LENGTH_LONG).show();
                 }
 
+                //insert the course name and instructor into the database and collect the course ID
                 DatabaseHelper databaseHelper = new DatabaseHelper(AddCourse.this);
-                boolean success = databaseHelper.addCourse(courseModel);
-                databaseHelper.close();
+                int courseId = databaseHelper.addCourse(courseModel);
 
+                TimetableModel timetableModel = null;
+
+                //collect course card information
+                for(int i=0; i<newCourseCards.size(); i++){
+                    Log.d("print", String.valueOf(i));
+                    String classType = newCourseCards.get(i).getClassType();
+                    try {
+                        int j=i ;
+                        timetableModel = new TimetableModel(courseId, classType, courseId, j++);
+                    }
+                    catch (Exception e) {
+                        Toast.makeText(AddCourse.this, "Error creating course card index " + courseId, Toast.LENGTH_LONG).show();
+                    }
+
+                    boolean success = databaseHelper.addTimetable(timetableModel);
+                    if(!success) {
+                        Toast.makeText(AddCourse.this, "Error inserting course card index " + courseId, Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                databaseHelper.close();
+                Intent intent = new Intent(AddCourse.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -99,7 +124,6 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
 
     public void createEvalCards() {
         newEvalCards = new ArrayList<>();
-        newEvalCards.add(new NewEvalCard("", getString(R.string.select_eval_date_button)));
     }
 
     public void buildCourseRecyclerView() {
