@@ -10,12 +10,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,7 +48,7 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
         parentView = findViewById(R.id.parent_view);
         setDate = "";
 
-        createCourseCards();
+        newCourseCards = new ArrayList<>();
         buildCourseRecyclerView();
 
         createEvalCards();
@@ -85,29 +87,34 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
                     Toast.makeText(AddCourse.this, "Error creating course.", Toast.LENGTH_LONG).show();
                 }
 
-                //insert the course name and instructor into the database and collect the course ID
+                //insert the course name and instructor into the database
+                //collect the course ID
                 DatabaseHelper databaseHelper = new DatabaseHelper(AddCourse.this);
                 int courseId = databaseHelper.addCourse(courseModel);
 
                 TimetableModel timetableModel = null;
 
                 //collect course card information
-                for(int i=0; i<newCourseCards.size(); i++){
+                //insert course hours information into database
+                for(int i=0; i<newCourseCards.size(); i++) {
                     Log.d("print", String.valueOf(i));
                     String classType = newCourseCards.get(i).getClassType();
-                    try {
-                        int j=i ;
-                        timetableModel = new TimetableModel(courseId, classType, courseId, j++);
-                    }
-                    catch (Exception e) {
-                        Toast.makeText(AddCourse.this, "Error creating course card index " + courseId, Toast.LENGTH_LONG).show();
-                    }
-
-                    boolean success = databaseHelper.addTimetable(timetableModel);
-                    if(!success) {
-                        Toast.makeText(AddCourse.this, "Error inserting course card index " + courseId, Toast.LENGTH_LONG).show();
+                    ArrayList<ClassDayHour> tempClassHour = newCourseCards.get(i).getClassDayHours();
+                    int sizeOfClassHours = tempClassHour.size();
+                    for (int j = 0; j < sizeOfClassHours; j++) {
+                        try {
+                            timetableModel = new TimetableModel(courseId, classType, tempClassHour.get(j).getClassHour(), tempClassHour.get(j).getClassDay());
+                        } catch (Exception e) {
+                            Toast.makeText(AddCourse.this, "Error creating course card index " + courseId, Toast.LENGTH_LONG).show();
+                        }
+                        boolean success = databaseHelper.addTimetable(timetableModel);
+                        if (!success) {
+                            Toast.makeText(AddCourse.this, "Error inserting course card index " + courseId, Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
+
+
 
                 databaseHelper.close();
                 Intent intent = new Intent(AddCourse.this, MainActivity.class);
@@ -115,11 +122,6 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
             }
         });
 
-    }
-
-    public void createCourseCards() {
-        newCourseCards = new ArrayList<>();
-        //newCourseCards.add(new NewCourseCard());
     }
 
     public void createEvalCards() {
@@ -136,9 +138,9 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
 
         adapterCourse.setOnItemClickListener(new NewCourseCardAdapter.OnItemClickListener() {
             @Override
-            public void onSelectClassClick(int position, View view) {
+            public void onSelectClassClick(int this_position, View view) {
                 LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                View selectClassPopup = inflater.inflate(R.layout.select_class_hours, null);
+                View selectClassPopup = inflater.inflate(R.layout.select_class_hours, AddCourse.this.findViewById(R.id.popup_element));
 
                 selectHoursPopup = new PopupWindow(
                         selectClassPopup,
@@ -148,10 +150,26 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
 
                 selectHoursPopup.setElevation(5.0f);
                 Button doneButton = selectClassPopup.findViewById(R.id.done_button_popup);
+                TextView classHoursTV = findViewById(R.id.class_hours_tv);
+
                 doneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ClassDayHour temp;
+                        String textViewString = "";
+                        ClassHoursIds classHoursIds = new ClassHoursIds();
+                        for(int dayCount = 0; dayCount < 5 ; dayCount++)
+                            for(int hourCount = 0; hourCount < 9 ; hourCount++ ) {
+                                CheckBox checkBox = selectClassPopup.findViewById(classHoursIds.ids.get(dayCount).get(hourCount));
+                                if (checkBox.isChecked()) {
+                                    temp = new ClassDayHour(hourCount+1, dayCount+1);
+                                    textViewString += String.valueOf(dayCount) + String.valueOf(hourCount) + " ";
+                                    AddCourse.this.newCourseCards.get(this_position).addClassDayHours(temp);
+                                }
+                            }
                         selectHoursPopup.dismiss();
+                        classHoursTV.setText(textViewString);
+                        doneButton.setText(R.string.edit_class_hours_button);
                     }
                 });
 

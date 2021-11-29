@@ -2,6 +2,7 @@ package com.example.bpdctimetableapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -43,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_CLASS_TYPE + " TEXT, " +
                 COLUMN_CLASS_HOUR + " INTEGER, " +
                 COLUMN_CLASS_DAY + " INTEGER, " +
-                "PRIMARY KEY(" + COLUMN_CLASS_HOUR + ", " + COLUMN_CLASS_DAY + "), " +
+                //"PRIMARY KEY(" + COLUMN_CLASS_HOUR + ", " + COLUMN_CLASS_DAY + "), " +
                 "FOREIGN KEY(" + COLUMN_COURSE_ID + ") REFERENCES COURSES(" + COLUMN_COURSE_ID + "))";
 
         String createEvaluationTableStatement = "CREATE TABLE " + TABLE_EVALUATION + "(" +
@@ -77,19 +78,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean addCourse(CourseModel courseModel) {
+    public int addCourse(CourseModel courseModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_COURSE_NAME, courseModel.getCourseName());
         cv.put(COLUMN_INSTRUCTOR_NAME, courseModel.getInstructorName());
 
-        long insert = db.insert(TABLE_COURSES, null, cv);
+        try {
+            long insert = db.insert(TABLE_COURSES, null, cv);
+        }
+        catch (Exception e) {
 
-        if(insert==-1)
-            return false;
-        else
-            return true;
+        }
+
+        //return courseId since courseId is automatically incremented in the table, we need the update courseId for insertion into evaluation and class type tables
+        int courseId = 0;
+
+        String fetchCourseId = "SELECT " + COLUMN_COURSE_ID + " FROM " + TABLE_COURSES + " WHERE " + COLUMN_COURSE_NAME + " LIKE \"" + courseModel.getCourseName() + "\"";
+        Cursor cursor = db.rawQuery(fetchCourseId, null);
+
+        if(cursor.moveToFirst()) {
+            courseId = cursor.getInt(0);
+        }
+
+        db.close();
+        cursor.close();
+        return courseId;
     }
 
     public boolean addReminder(ReminderModel reminderModel) {
@@ -100,6 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_REMINDER_DATE_TIME, reminderModel.getReminderDateTime());
 
         long insert = db.insert(TABLE_REMINDERS, null, cv);
+        db.close();
 
         if(insert==-1)
             return false;
@@ -115,6 +131,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_TAG, reminderTagModel.getReminderTag());
 
         long insert = db.insert(TABLE_REMINDER_TAG, null, cv);
+        db.close();
+
+        if(insert==-1)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean addTimetable(TimetableModel timetableModel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        if(timetableModel.getClassType() == null)
+            timetableModel.setClassType("Lecture");
+
+        cv.put(COLUMN_COURSE_ID, timetableModel.getCourseId());
+        cv.put(COLUMN_CLASS_TYPE, timetableModel.getClassType());
+        cv.put(COLUMN_CLASS_DAY, timetableModel.getClassDay());
+        cv.put(COLUMN_CLASS_HOUR, timetableModel.getClassHour());
+
+        long insert = db.insert(TABLE_TIMETABLE, null, cv);
+        db.close();
 
         if(insert==-1)
             return false;

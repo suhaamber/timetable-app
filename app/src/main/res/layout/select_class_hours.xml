@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popup_element"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -62,11 +63,24 @@
             android:layout_gravity="center_vertical"
             android:text="1"/>
 
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
+        <CheckBox
+            android:id="@+id/popup_11"
+            android:layout_width="@dimen/popup_button_dimen"
+            android:layout_height="@dimen/popup_button_dimen"
+            android:layout_margin="5dp" />
+
+        <include
+            android:id="@+id/popup_12"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_13"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_14"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_15"
+            layout="@layout/popup_button"/>
 
         <TextView
             android:layout_height="wrap_content"
@@ -75,11 +89,21 @@
             android:layout_gravity="center_vertical"
             android:text="2"/>
 
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_21"
+            layout="@layout/popup_button" />
+        <include
+            android:id="@+id/popup_22"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_23"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_24"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_25"
+            layout="@layout/popup_button"/>
 
         <TextView
             android:layout_height="wrap_content"
@@ -88,11 +112,21 @@
             android:layout_gravity="center_vertical"
             android:text="3"/>
 
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_31"
+            layout="@layout/popup_button" />
+        <include
+            android:id="@+id/popup_32"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_33"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_34"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_35"
+            layout="@layout/popup_button"/>
 
         <TextView
             android:layout_height="wrap_content"
@@ -101,11 +135,21 @@
             android:layout_gravity="center_vertical"
             android:text="4"/>
 
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_41"
+            layout="@layout/popup_button" />
+        <include
+            android:id="@+id/popup_42"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_43"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_44"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_45"
+            layout="@layout/popup_button"/>
 
         <TextView
             android:layout_height="wrap_content"
@@ -114,11 +158,21 @@
             android:layout_gravity="center_vertical"
             android:text="5"/>
 
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_51"
+            layout="@layout/popup_button" />
+        <include
+            android:id="@+id/popup_52"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_53"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_54"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_55"
+            layout="@layout/popup_button"/>
 
         <TextView
             android:layout_height="wrap_content"
@@ -127,11 +181,21 @@
             android:layout_gravity="center_vertical"
             android:text="6"/>
 
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_61"
+            layout="@layout/popup_button" />
+        <include
+            android:id="@+id/popup_62"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_63"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_64"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_65"
+            layout="@layout/popup_button"/>
 
         <TextView
             android:layout_height="wrap_content"
@@ -140,11 +204,21 @@
             android:layout_gravity="center_vertical"
             android:text="7"/>
 
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_71"
+            layout="@layout/popup_button" />
+        <include
+            android:id="@+id/popup_72"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_73"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_74"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_75"
+            layout="@layout/popup_button"/>
 
         <TextView
             android:layout_height="wrap_content"
@@ -153,11 +227,21 @@
             android:layout_gravity="center_vertical"
             android:text="8"/>
 
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_81"
+            layout="@layout/popup_button" />
+        <include
+            android:id="@+id/popup_82"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_83"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_84"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_85"
+            layout="@layout/popup_button"/>
 
         <TextView
             android:layout_height="wrap_content"
@@ -166,11 +250,21 @@
             android:layout_gravity="center_vertical"
             android:text="9"/>
 
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
-        <include layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_91"
+            layout="@layout/popup_button" />
+        <include
+            android:id="@+id/popup_92"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_93"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_94"
+            layout="@layout/popup_button"/>
+        <include
+            android:id="@+id/popup_95"
+            layout="@layout/popup_button"/>
 
     </GridLayout>
 
