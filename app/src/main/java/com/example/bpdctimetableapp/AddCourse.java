@@ -3,9 +3,7 @@ package com.example.bpdctimetableapp;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
-public class AddCourse extends Activity implements DatePickerDialog.OnDateSetListener {
+public class AddCourse extends Activity {
 
     private RecyclerView recyclerViewCourse, recyclerViewEval;
     private NewCourseCardAdapter adapterCourse;
@@ -39,6 +38,7 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
     private ScrollView parentView;
     private Button addCourse;
     private EditText courseNameET, instructorNameET;
+    private DatePickerDialog.OnDateSetListener dateListener;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,24 +97,41 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
                 //collect course card information
                 //insert course hours information into database
                 for(int i=0; i<newCourseCards.size(); i++) {
-                    Log.d("print", String.valueOf(i));
                     String classType = newCourseCards.get(i).getClassType();
                     ArrayList<ClassDayHour> tempClassHour = newCourseCards.get(i).getClassDayHours();
                     int sizeOfClassHours = tempClassHour.size();
                     for (int j = 0; j < sizeOfClassHours; j++) {
                         try {
-                            timetableModel = new TimetableModel(courseId, classType, tempClassHour.get(j).getClassHour(), tempClassHour.get(j).getClassDay());
+                            int hour = tempClassHour.get(j).getClassHour();
+                            int day = tempClassHour.get(j).getClassDay();
+                            timetableModel = new TimetableModel(courseId, classType, hour, day);
                         } catch (Exception e) {
-                            Toast.makeText(AddCourse.this, "Error creating course card index " + courseId, Toast.LENGTH_LONG).show();
+                            Toast.makeText(AddCourse.this, "Error creating course card index " + i, Toast.LENGTH_LONG).show();
                         }
                         boolean success = databaseHelper.addTimetable(timetableModel);
                         if (!success) {
-                            Toast.makeText(AddCourse.this, "Error inserting course card index " + courseId, Toast.LENGTH_LONG).show();
+                            Toast.makeText(AddCourse.this, "Error inserting course card at index " + i, Toast.LENGTH_LONG).show();
                         }
                     }
                 }
 
-
+                //collect eval card information
+                //insert evaluation details into database
+                EvaluationModel evaluationModel = null;
+                for (int i = 0; i < newEvalCards.size(); i++) {
+                    String evalType = newEvalCards.get(i).getEvalType();
+                    String evalDate = newEvalCards.get(i).getEvalDate();
+                    try {
+                        evaluationModel = new EvaluationModel(courseId, evalType, evalDate);
+                    }
+                    catch (Exception e) {
+                        Toast.makeText(AddCourse.this, "Error creating eval card at index " + i, Toast.LENGTH_LONG).show();
+                    }
+                    boolean success = databaseHelper.addEvaluation(evaluationModel);
+                    if (!success) {
+                        Toast.makeText(AddCourse.this, "Error inserting eval card at index " + i, Toast.LENGTH_LONG).show();
+                    }
+                }
 
                 databaseHelper.close();
                 Intent intent = new Intent(AddCourse.this, MainActivity.class);
@@ -167,9 +184,13 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
                                     AddCourse.this.newCourseCards.get(this_position).addClassDayHours(temp);
                                 }
                             }
-                        selectHoursPopup.dismiss();
-                        classHoursTV.setText(textViewString);
-                        doneButton.setText(R.string.edit_class_hours_button);
+                            selectHoursPopup.dismiss();
+
+                            //show chosen hours in the course card
+                            newCourseCards.get(this_position).setButtonText(getResources().getString(R.string.edit_class_hours_button));
+                            newCourseCards.get(this_position).setClassHourLabel(textViewString);
+                            adapterCourse.notifyItemChanged(this_position);
+
                     }
                 });
 
@@ -200,10 +221,27 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
 
             @Override
             public void onSetDateClick(int position, View view) {
-                pickDate(view);
-                newEvalCards.get(position).dateLabelChange(setDate);
-                newEvalCards.get(position).buttonTextChange(getString(R.string.edit_eval_date));
-                adapterEval.notifyItemChanged(position);
+
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        AddCourse.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                String temp = String.format("%d-%d-%d", dayOfMonth, (month+1), year);
+                                newEvalCards.get(position).dateLabelChange(temp);
+                                newEvalCards.get(position).setEvalDate(temp);
+                                newEvalCards.get(position).setButtonText(getString(R.string.edit_eval_date));
+                                adapterEval.notifyItemChanged(position);
+                            }
+                        },
+                        year, month, day
+                );
+                datePickerDialog.show();
             }
         });
     }
@@ -219,23 +257,18 @@ public class AddCourse extends Activity implements DatePickerDialog.OnDateSetLis
     }
 
     public void addNewCourseCard(View view) {
-        newCourseCards.add(new NewCourseCard());
+        newCourseCards.add(new NewCourseCard(getResources().getString(R.string.select_class_hours_button)));
         adapterCourse.notifyDataSetChanged();
     }
 
     public void addNewEvalCard(View view) {
-        newEvalCards.add((new NewEvalCard("", getString(R.string.select_eval_date_button))));
+        newEvalCards.add((new NewEvalCard(null,null, getString(R.string.select_eval_date_button))));
         adapterEval.notifyDataSetChanged();
     }
 
-    public void pickDate(View view) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this, this, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.show();
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        setDate = String.format("%d-%d-%d", dayOfMonth, month, year);
-    }
+    //public void pickDate(View view) {
+      //  DatePickerDialog datePickerDialog = new DatePickerDialog(
+        //        this, this, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+      //  datePickerDialog.show();
+    //}
 }

@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +33,7 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
 
         public ImageButton deleteCourseCard;
         public Button selectClassHours;
+        public TextView classHourTextView;
         public Spinner spinner;
 
         public NewCourseViewHolder(@NonNull View itemView, final OnItemClickListener listener, ArrayList<NewCourseCard> newCourseCards) {
@@ -39,6 +41,7 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
             deleteCourseCard = itemView.findViewById(R.id.button_delete_course_card);
             selectClassHours = itemView.findViewById(R.id.select_class_hours_button);
             spinner = itemView.findViewById(R.id.class_type_spinner);
+            classHourTextView = itemView.findViewById((R.id.class_hours_tv));
 
             selectClassHours.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,6 +96,9 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
     @Override
     public void onBindViewHolder(@NonNull NewCourseViewHolder holder, int position) {
         NewCourseCard currentItem = newCourseCards.get(position);
+
+        holder.classHourTextView.setText(currentItem.getClassHourLabel());
+        holder.selectClassHours.setText(currentItem.getButtonText());
 
     }
 

@@ -3,8 +3,10 @@ package com.example.bpdctimetableapp;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,12 +32,14 @@ public class NewEvalCardAdapter extends RecyclerView.Adapter<NewEvalCardAdapter.
         public ImageButton deleteEvalCard;
         public Button selectEvalDateButton;
         public TextView dateTextView;
+        public Spinner spinner;
 
-        public NewEvalViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+        public NewEvalViewHolder(@NonNull View itemView, final OnItemClickListener listener, ArrayList<NewEvalCard> newEvalCards) {
             super(itemView);
             deleteEvalCard = itemView.findViewById(R.id.button_delete_eval_card);
             selectEvalDateButton = itemView.findViewById(R.id.select_eval_date_button);
             dateTextView = itemView.findViewById(R.id.eval_date_textview);
+            spinner = itemView.findViewById(R.id.eval_type_spinner);
 
             deleteEvalCard.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -60,6 +64,18 @@ public class NewEvalCardAdapter extends RecyclerView.Adapter<NewEvalCardAdapter.
                     }
                 }
             });
+
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    newEvalCards.get(getBindingAdapterPosition()).setEvalType(spinner.getItemAtPosition(position).toString());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    newEvalCards.get(getBindingAdapterPosition()).setEvalType("Mid-semester Test");
+                }
+            });
         }
     }
 
@@ -67,7 +83,7 @@ public class NewEvalCardAdapter extends RecyclerView.Adapter<NewEvalCardAdapter.
     @Override
     public NewEvalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_eval_card, parent, false);
-        NewEvalViewHolder newEvalViewHolder = new NewEvalViewHolder(v, mListener);
+        NewEvalViewHolder newEvalViewHolder = new NewEvalViewHolder(v, mListener, newEvalCards);
         return newEvalViewHolder;
 
     }

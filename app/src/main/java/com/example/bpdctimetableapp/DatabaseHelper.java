@@ -21,8 +21,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CLASS_TYPE = "CLASS_TYPE";
     public static final String COLUMN_CLASS_HOUR = "CLASS_HOUR";
     public static final String COLUMN_CLASS_DAY = "CLASS_DAY";
-    public static final String COLUMN_TABLE_EVALUATION_TYPE = "TABLE_EVALUATION_TYPE";
-    public static final String COLUMN_TABLE_EVALUATION_DATE = "TABLE_EVALUATION_DATE";
+    public static final String COLUMN_EVALUATION_TYPE = "EVALUATION_TYPE";
+    public static final String COLUMN_EVALUATION_DATE = "EVALUATION_DATE";
     public static final String COLUMN_REMINDER_ID = "REMINDER_ID";
     public static final String COLUMN_REMINDER_DATE_TIME = "REMINDER_DATE_TIME";
     public static final String COLUMN_REMINDER_TITLE = "REMINDER_TITLE";
@@ -49,8 +49,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String createEvaluationTableStatement = "CREATE TABLE " + TABLE_EVALUATION + "(" +
                 COLUMN_COURSE_ID + " INTEGER, " +
-                COLUMN_TABLE_EVALUATION_TYPE + " TEXT, " +
-                COLUMN_TABLE_EVALUATION_DATE + " TEXT, " +
+                COLUMN_EVALUATION_TYPE + " TEXT, " +
+                COLUMN_EVALUATION_DATE + " TEXT, " +
                 "FOREIGN KEY(" + COLUMN_COURSE_ID + ") REFERENCES COURSES(" + COLUMN_COURSE_ID + "))";
         //using date in string form for now
 
@@ -152,6 +152,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_CLASS_HOUR, timetableModel.getClassHour());
 
         long insert = db.insert(TABLE_TIMETABLE, null, cv);
+        db.close();
+
+        if(insert==-1)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean addEvaluation(EvaluationModel evaluationModel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        if(evaluationModel.getEvaluationType() == null)
+            evaluationModel.setEvaluationType("Mid-semester Test");
+
+        cv.put(COLUMN_COURSE_ID, evaluationModel.getCourseId());
+        cv.put(COLUMN_EVALUATION_TYPE, evaluationModel.getEvaluationType());
+        cv.put(COLUMN_EVALUATION_DATE, evaluationModel.getEvaluationDate());
+
+        long insert = db.insert(TABLE_EVALUATION, null, cv);
         db.close();
 
         if(insert==-1)
