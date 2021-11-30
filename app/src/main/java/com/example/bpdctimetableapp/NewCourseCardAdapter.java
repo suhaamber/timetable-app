@@ -67,6 +67,7 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
                 }
             });
 
+            //TODO: Spinner value changes on selecting class hours, fix dat
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -75,7 +76,7 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-                    newCourseCards.get(getBindingAdapterPosition()).setClassType("Lecture");
+                    newCourseCards.get(getBindingAdapterPosition()).setClassType(newCourseCards.get(getBindingAdapterPosition()).getClassType());
                 }
             });
         }

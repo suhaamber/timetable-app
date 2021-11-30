@@ -14,10 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +35,7 @@ public class AddCourse extends Activity {
     private ImageButton addCourseCard, addEvalCard;
     private String setDate;
     private PopupWindow selectHoursPopup;
-    private ScrollView parentView;
+    private NestedScrollView parentView;
     private Button addCourse;
     private EditText courseNameET, instructorNameET;
     private DatePickerDialog.OnDateSetListener dateListener;
@@ -152,12 +152,13 @@ public class AddCourse extends Activity {
 
         recyclerViewCourse.setLayoutManager(layoutManagerCourse);
         recyclerViewCourse.setAdapter(adapterCourse);
+        recyclerViewCourse.setNestedScrollingEnabled(false);
 
         adapterCourse.setOnItemClickListener(new NewCourseCardAdapter.OnItemClickListener() {
             @Override
             public void onSelectClassClick(int this_position, View view) {
                 LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                View selectClassPopup = inflater.inflate(R.layout.select_class_hours, AddCourse.this.findViewById(R.id.popup_element));
+                View selectClassPopup = inflater.inflate(R.layout.select_class_hours_popup, AddCourse.this.findViewById(R.id.popup_element));
 
                 selectHoursPopup = new PopupWindow(
                         selectClassPopup,
@@ -211,6 +212,7 @@ public class AddCourse extends Activity {
 
         recyclerViewEval.setLayoutManager(layoutManagerEval);
         recyclerViewEval.setAdapter(adapterEval);
+        recyclerViewEval.setNestedScrollingEnabled(false);
 
         adapterEval.setOnItemClickListener(new NewEvalCardAdapter.OnItemClickListener() {
 

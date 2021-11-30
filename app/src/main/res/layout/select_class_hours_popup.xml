@@ -63,11 +63,9 @@
             android:layout_gravity="center_vertical"
             android:text="1"/>
 
-        <CheckBox
+        <include
             android:id="@+id/popup_11"
-            android:layout_width="@dimen/popup_button_dimen"
-            android:layout_height="@dimen/popup_button_dimen"
-            android:layout_margin="5dp" />
+            layout="@layout/popup_button" />
 
         <include
             android:id="@+id/popup_12"

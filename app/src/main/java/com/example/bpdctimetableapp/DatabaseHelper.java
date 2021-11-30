@@ -34,6 +34,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //TODO: delete database and insert values again
+
         String createCourseTableStatement = "CREATE TABLE " + TABLE_COURSES + "(" +
                 COLUMN_COURSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_COURSE_NAME + " TEXT, " +
