@@ -2,6 +2,7 @@ package com.example.bpdctimetableapp;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
@@ -39,22 +40,44 @@ public class AddReminder extends FragmentActivity implements DatePickerDialog.On
             @Override
             public void onClick(View v) {
                 ReminderModel reminderModel = null;
-                ReminderTagModel reminderTagModel = null;
 
                 try {
                     String reminderDateTime = pickDateTextView.getText().toString() +  pickTimeTextView.getText().toString();
-                    reminderModel = new ReminderModel(-1, reminderTitleET.getText().toString(), reminderDateTime);
-                    reminderTagModel = new ReminderTagModel(-1, reminderTagsET.getText().toString());
-                    Toast.makeText(AddReminder.this, "Successfully added reminder!" , Toast.LENGTH_LONG).show();
+                    reminderModel = new ReminderModel(-1, reminderTitleET.getText().toString(), reminderDateTime );
                 }
                 catch (Exception e) {
-                    Toast.makeText(AddReminder.this, "Error adding reminder." , Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddReminder.this, "Error creating reminder.", Toast.LENGTH_LONG).show();
                 }
 
                 DatabaseHelper databaseHelper = new DatabaseHelper(AddReminder.this);
-                databaseHelper.addReminder(reminderModel);
-                databaseHelper.addReminderTags(reminderTagModel);
+                int reminderId = 0;
+                //insert reminder title and date into database
+                try {
+                    reminderId = databaseHelper.addReminder(reminderModel);
+                }
+                catch (Exception e) {
+                    Toast.makeText(AddReminder.this, "Error inserting reminder.", Toast.LENGTH_LONG).show();
+                }
+
+                ReminderTagModel reminderTagModel = null;
+                try {
+                    reminderTagModel = new ReminderTagModel(reminderId, reminderTagsET.getText().toString());
+                }
+                catch (Exception e) {
+                    Toast.makeText(AddReminder.this, "Error adding reminder tags." , Toast.LENGTH_LONG).show();
+                }
+
+                //insert reminder tags into database
+                try {
+                    databaseHelper.addReminderTags(reminderTagModel);
+                }
+                catch (Exception e) {
+                    Toast.makeText(AddReminder.this, "Error inserting reminder tags.", Toast.LENGTH_LONG).show();
+                }
+
                 databaseHelper.close();
+                Intent intent = new Intent(AddReminder.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
