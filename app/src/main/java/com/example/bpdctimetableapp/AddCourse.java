@@ -180,8 +180,8 @@ public class AddCourse extends Activity {
                             for(int hourCount = 0; hourCount < 9 ; hourCount++ ) {
                                 CheckBox checkBox = selectClassPopup.findViewById(classHoursIds.ids.get(dayCount).get(hourCount));
                                 if (checkBox.isChecked()) {
-                                    temp = new ClassDayHour(hourCount+1, dayCount+1);
-                                    textViewString += String.valueOf(dayCount) + String.valueOf(hourCount) + " ";
+                                    temp = new ClassDayHour(hourCount+1, dayCount);
+                                    textViewString += dayToDayName(dayCount) + String.valueOf(hourCount+1) + " ";
                                     AddCourse.this.newCourseCards.get(this_position).addClassDayHours(temp);
                                 }
                             }
@@ -203,6 +203,17 @@ public class AddCourse extends Activity {
                 removeCourseItem(position);
             }
         });
+    }
+
+    public String dayToDayName(int dayCount) {
+        switch (dayCount) {
+            case 0: return "S";
+            case 1: return "M";
+            case 2: return "T";
+            case 3: return "W";
+            case 4: return "Th";
+            default: return null;
+        }
     }
 
     public void buildEvalRecyclerView() {
@@ -267,10 +278,4 @@ public class AddCourse extends Activity {
         newEvalCards.add((new NewEvalCard(null,null, getString(R.string.select_eval_date_button))));
         adapterEval.notifyDataSetChanged();
     }
-
-    //public void pickDate(View view) {
-      //  DatePickerDialog datePickerDialog = new DatePickerDialog(
-        //        this, this, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-      //  datePickerDialog.show();
-    //}
 }

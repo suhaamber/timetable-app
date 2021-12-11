@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -39,7 +40,11 @@ public class NewEvalCardAdapter extends RecyclerView.Adapter<NewEvalCardAdapter.
             deleteEvalCard = itemView.findViewById(R.id.button_delete_eval_card);
             selectEvalDateButton = itemView.findViewById(R.id.select_eval_date_button);
             dateTextView = itemView.findViewById(R.id.eval_date_textview);
+
             spinner = itemView.findViewById(R.id.eval_type_spinner);
+            ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(itemView.getContext(), R.array.eval_type_values, android.R.layout.simple_spinner_item);
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(spinnerAdapter);
 
             deleteEvalCard.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -95,6 +100,13 @@ public class NewEvalCardAdapter extends RecyclerView.Adapter<NewEvalCardAdapter.
     @Override
     public void onBindViewHolder(@NonNull NewEvalViewHolder holder, int position) {
         NewEvalCard currentItem = newEvalCards.get(position);
+
+        if(newEvalCards.get(position).getEvalType() == null) {
+            holder.spinner.setSelection(0);
+        }
+        else {
+            holder.spinner.setSelection(((ArrayAdapter)holder.spinner.getAdapter()).getPosition(newEvalCards.get(position).getEvalType()));
+        }
 
         holder.selectEvalDateButton.setText(currentItem.getButtonText());
         holder.dateTextView.setText(currentItem.getEvalDate());

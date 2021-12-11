@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_COURSE_NAME = "COURSE_NAME";
     public static final String COLUMN_INSTRUCTOR_NAME = "INSTRUCTOR_NAME";
@@ -34,7 +36,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //TODO: delete database and insert values again
 
         String createCourseTableStatement = "CREATE TABLE " + TABLE_COURSES + "(" +
                 COLUMN_COURSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -109,20 +110,105 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return courseId;
     }
 
-    public boolean addReminder(ReminderModel reminderModel) {
+    public ArrayList<NewViewCourseCard> getCourses() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getCourses = "SELECT * FROM " + TABLE_COURSES;
+        Cursor cursor = db.rawQuery(getCourses, null);
+
+        ArrayList<NewViewCourseCard> cardArrayList = new ArrayList<>();
+        ArrayList<Integer> courseIdtempList = new ArrayList<>();
+        int courseId = 0;
+        String courseName;
+        String instructorName;
+
+
+        //fetch course id, course name, instructor name
+        if(cursor.moveToFirst()) {
+            do {
+                    courseId = cursor.getInt(0);
+                    courseName = cursor.getString(1);
+                    instructorName = cursor.getString(2);
+
+                    cardArrayList.add(new NewViewCourseCard(courseName, instructorName, null));
+                    courseIdtempList.add(courseId);
+
+            }while(cursor.moveToNext());
+        }
+        else {
+            //no records of courses in the database. do not add anything
+        }
+
+        String getClassHours;
+        int classHour = 0;
+        int classDay = 0;
+        String classHours = "";
+        String classType = "";
+
+
+        for (int i = 0; i < cardArrayList.size(); i++) {
+            //fetch class hours
+            getClassHours = "SELECT " + COLUMN_CLASS_TYPE + ", " +COLUMN_CLASS_HOUR + ", " + COLUMN_CLASS_HOUR + " FROM " +
+                    TABLE_TIMETABLE + " WHERE " + COLUMN_COURSE_ID + "=" + String.valueOf(courseIdtempList.get(i));
+            cursor = db.rawQuery(getClassHours, null);
+
+
+            classHours = "";
+            if(cursor.moveToFirst()) {
+                do {
+                    classType = cursor.getString(0);
+                    classHour = cursor.getInt(1);
+                    classDay = cursor.getInt(2);
+
+                    classHours += classType + " " + classDayNumToString(classDay) +  String.valueOf(classHour) + "\n";
+                } while (cursor.moveToNext());
+            }
+            cardArrayList.get(i).setClassHours(classHours);
+        }
+
+        //add attendance later
+        cursor.close();
+        db.close();
+        return cardArrayList;
+    }
+
+    public String classDayNumToString(int classDay) {
+        switch (classDay) {
+            case 1: return "S";
+            case 2: return "M";
+            case 3: return "T";
+            case 4: return "W";
+            case 5: return "Th";
+            default: return String.valueOf(classDay);
+        }
+    }
+
+    public int addReminder(ReminderModel reminderModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_REMINDER_TITLE, reminderModel.getReminderTitle());
         cv.put(COLUMN_REMINDER_DATE_TIME, reminderModel.getReminderDateTime());
 
-        long insert = db.insert(TABLE_REMINDERS, null, cv);
-        db.close();
+        long insert = 0;
+        try {
+            insert = db.insert(TABLE_REMINDERS, null, cv);
+        }
+        catch (Exception e) {
+            //error
+        }
 
-        if(insert==-1)
-            return false;
-        else
-            return true;
+        int reminderId = 0;
+
+        String fetchReminderId = "SELECT " + COLUMN_REMINDER_ID + " FROM " + TABLE_REMINDERS + " WHERE " + COLUMN_REMINDER_TITLE + " LIKE \"" + reminderModel.getReminderTitle() + "\"";
+        Cursor cursor = db.rawQuery(fetchReminderId, null);
+
+        if(cursor.moveToFirst()) {
+            reminderId = cursor.getInt(0);
+        }
+
+        db.close();
+        cursor.close();
+        return reminderId;
     }
 
     public boolean addReminderTags(ReminderTagModel reminderTagModel) {

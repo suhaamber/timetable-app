@@ -12,6 +12,7 @@ public class NewCourseCard {
     public NewCourseCard(String buttonText) {
         classDayHours = new ArrayList<>();
         this.buttonText = buttonText;
+        classType = null;
     }
 
     public String getClassType() {

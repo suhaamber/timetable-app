@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -40,7 +41,12 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
             super(itemView);
             deleteCourseCard = itemView.findViewById(R.id.button_delete_course_card);
             selectClassHours = itemView.findViewById(R.id.select_class_hours_button);
+
             spinner = itemView.findViewById(R.id.class_type_spinner);
+            ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(itemView.getContext(), R.array.class_type_values, android.R.layout.simple_spinner_item);
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(spinnerAdapter);
+
             classHourTextView = itemView.findViewById((R.id.class_hours_tv));
 
             selectClassHours.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +73,6 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
                 }
             });
 
-            //TODO: Spinner value changes on selecting class hours, fix dat
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -98,9 +103,15 @@ public class NewCourseCardAdapter extends RecyclerView.Adapter<NewCourseCardAdap
     public void onBindViewHolder(@NonNull NewCourseViewHolder holder, int position) {
         NewCourseCard currentItem = newCourseCards.get(position);
 
+        if(newCourseCards.get(position).getClassType() == null) {
+            holder.spinner.setSelection(0);
+        }
+        else {
+            holder.spinner.setSelection(((ArrayAdapter)holder.spinner.getAdapter()).getPosition(newCourseCards.get(position).getClassType()));
+        }
+
         holder.classHourTextView.setText(currentItem.getClassHourLabel());
         holder.selectClassHours.setText(currentItem.getButtonText());
-
     }
 
     @Override
