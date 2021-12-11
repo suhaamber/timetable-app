@@ -227,6 +227,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
     }
 
+    public ArrayList<ReminderViewCard> getReminders() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getReminder = "SELECT * FROM " + TABLE_REMINDERS;
+        Cursor cursor = db.rawQuery(getReminder, null);
+
+        ArrayList<ReminderViewCard> reminderViewCards = new ArrayList<>();
+        ArrayList<Integer> reminderIdList = new ArrayList<>();
+        int reminderId = 0;
+        String reminderTitle, reminderDateTime;
+
+        //fetch reminder Id, title and dateTime
+        if(cursor.moveToFirst()) {
+            do {
+                reminderId = cursor.getInt(0);
+                reminderTitle = cursor.getString(1);
+                reminderDateTime = cursor.getString(2);
+
+                reminderViewCards.add(new ReminderViewCard(reminderTitle, null, reminderDateTime));
+                reminderIdList.add(reminderId);
+            } while(cursor.moveToNext());
+        }
+
+        for(int i = 0; i < reminderViewCards.size(); i++) {
+            String getTags = "SELECT " + COLUMN_TAG + " FROM " + TABLE_REMINDER_TAG + " WHERE " + COLUMN_REMINDER_ID + "=" + String.valueOf(reminderIdList.get(i));
+            cursor = db.rawQuery(getTags, null);
+
+            String tag = "";
+            if(cursor.moveToFirst()) {
+                do {
+                    tag += cursor.getString(0) + " ";
+                } while (cursor.moveToNext());
+            }
+
+            reminderViewCards.get(i).setReminderTags(tag);
+        }
+
+        cursor.close();
+        db.close();
+        return reminderViewCards;
+    }
+
     public boolean addTimetable(TimetableModel timetableModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
