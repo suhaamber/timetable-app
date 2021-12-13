@@ -147,7 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         for (int i = 0; i < cardArrayList.size(); i++) {
             //fetch class hours
-            getClassHours = "SELECT " + COLUMN_CLASS_TYPE + ", " +COLUMN_CLASS_HOUR + ", " + COLUMN_CLASS_HOUR + " FROM " +
+            getClassHours = "SELECT " + COLUMN_CLASS_TYPE + ", " +COLUMN_CLASS_HOUR + ", " + COLUMN_CLASS_DAY + " FROM " +
                     TABLE_TIMETABLE + " WHERE " + COLUMN_COURSE_ID + "=" + String.valueOf(courseIdtempList.get(i));
             cursor = db.rawQuery(getClassHours, null);
 
@@ -173,11 +173,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public String classDayNumToString(int classDay) {
         switch (classDay) {
-            case 1: return "S";
-            case 2: return "M";
-            case 3: return "T";
-            case 4: return "W";
-            case 5: return "Th";
+            case 0: return "S";
+            case 1: return "M";
+            case 2: return "T";
+            case 3: return "W";
+            case 4: return "Th";
             default: return String.valueOf(classDay);
         }
     }
@@ -287,6 +287,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         else
             return true;
+    }
+
+    public ArrayList<TimetableModel> getTimetable() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getTimetable = "SELECT " + TABLE_COURSES + "." + COLUMN_COURSE_ID + ", " +
+                COLUMN_COURSE_NAME + ", " + COLUMN_CLASS_TYPE + ", " + COLUMN_CLASS_HOUR +
+                ", " + COLUMN_CLASS_DAY + " FROM " + TABLE_COURSES + " INNER JOIN " + TABLE_TIMETABLE +
+                " ON " + TABLE_COURSES + "." + COLUMN_COURSE_ID + "=" + TABLE_TIMETABLE + "." + COLUMN_COURSE_ID;
+        Cursor cursor = db.rawQuery(getTimetable, null);
+
+        ArrayList<TimetableModel>  timetableList = new ArrayList<>();
+        int courseId = 0, classHour = 0, classDay = 0;
+        String courseName = "", classType = "";
+
+        if(cursor.moveToFirst()) {
+            do {
+                courseId = cursor.getInt(0);
+                courseName = cursor.getString(1);
+                classType = cursor.getString(2);
+                classHour = cursor.getInt(3);
+                classDay = cursor.getInt(4);
+
+                timetableList.add(new TimetableModel(courseId, courseName, classType, classHour, classDay));
+            }while (cursor.moveToNext());
+        }
+
+        return timetableList;
     }
 
     public boolean addEvaluation(EvaluationModel evaluationModel) {

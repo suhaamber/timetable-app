@@ -3,15 +3,32 @@ package com.example.bpdctimetableapp;
 public class TimetableModel {
 
     private int courseId;
+    private String courseName;
     private String classType;
     private int classHour;
     private int classDay;
+
+    public TimetableModel(int courseId, String courseName, String classType, int classHour, int classDay) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.classType = classType;
+        this.classHour = classHour;
+        this.classDay = classDay;
+    }
 
     public TimetableModel(int courseId, String classType, int classHour, int classDay) {
         this.courseId = courseId;
         this.classType = classType;
         this.classHour = classHour;
         this.classDay = classDay;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public TimetableModel() {
