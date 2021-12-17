@@ -110,12 +110,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return courseId;
     }
 
-    public ArrayList<NewViewCourseCard> getCourses() {
+    public ArrayList<ViewCourseCard> getCourses() {
         SQLiteDatabase db = this.getReadableDatabase();
         String getCourses = "SELECT * FROM " + TABLE_COURSES;
         Cursor cursor = db.rawQuery(getCourses, null);
 
-        ArrayList<NewViewCourseCard> cardArrayList = new ArrayList<>();
+        ArrayList<ViewCourseCard> cardArrayList = new ArrayList<>();
         ArrayList<Integer> courseIdtempList = new ArrayList<>();
         int courseId = 0;
         String courseName;
@@ -129,7 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     courseName = cursor.getString(1);
                     instructorName = cursor.getString(2);
 
-                    cardArrayList.add(new NewViewCourseCard(courseName, instructorName, null));
+                    cardArrayList.add(new ViewCourseCard(courseId, courseName, instructorName, null));
                     courseIdtempList.add(courseId);
 
             }while(cursor.moveToNext());

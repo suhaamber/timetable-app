@@ -1,5 +1,6 @@
 package com.example.bpdctimetableapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,9 @@ import java.util.ArrayList;
 public class CoursesFragment extends Fragment {
 
     private RecyclerView recyclerViewCourse;
-    private NewViewCourseAdapter newViewCourseAdapter;
+    private ViewCourseAdapter viewCourseAdapter;
     private RecyclerView.LayoutManager layoutManagerCourse;
-    private ArrayList<NewViewCourseCard> newViewCourseCards;
+    private ArrayList<ViewCourseCard> viewCourseCards;
     private ConstraintLayout parentView;
 
     @Nullable
@@ -44,24 +45,28 @@ public class CoursesFragment extends Fragment {
 
         //access database and insert information into cards
         DatabaseHelper db = new DatabaseHelper(CoursesFragment.this.getContext());
-        newViewCourseCards = db.getCourses();
+        viewCourseCards = db.getCourses();
 
     }
 
     private void buildCourseRecyclerView() {
         recyclerViewCourse = parentView.findViewById(R.id.view_courses_recycler_view);
         layoutManagerCourse = new LinearLayoutManager(this.getContext());
-        newViewCourseAdapter = new NewViewCourseAdapter(newViewCourseCards);
+        viewCourseAdapter = new ViewCourseAdapter(viewCourseCards);
 
         recyclerViewCourse.setLayoutManager(layoutManagerCourse);
-        recyclerViewCourse.setAdapter(newViewCourseAdapter);
+        recyclerViewCourse.setAdapter(viewCourseAdapter);
         recyclerViewCourse.setNestedScrollingEnabled(false);
 
-        newViewCourseAdapter.setOnItemClickListener(new NewViewCourseAdapter.OnItemClickListener() {
+        viewCourseAdapter.setOnItemClickListener(new ViewCourseAdapter.OnItemClickListener() {
             @Override
             public void onCourseClick(int position, View view) {
-                //create a new activity to show course details
+                //TODO: create a new activity to show course details
                 //create an intent and pass on the courseID
+                int courseId = viewCourseCards.get(position).getCourseId();
+                Intent intent = new Intent(getActivity(), CourseView.class);
+                intent.putExtra("COURSE_ID", courseId);
+                getActivity().startActivity(intent);
             }
         });
 

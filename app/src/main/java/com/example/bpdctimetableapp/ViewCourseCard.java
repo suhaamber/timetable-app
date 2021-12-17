@@ -1,13 +1,21 @@
 package com.example.bpdctimetableapp;
 
-public class NewViewCourseCard {
+public class ViewCourseCard {
 
+    private int courseId;
     private String courseName;
     private String instructorName;
     //TODO: find a better way to represent class hours in the course view
     private String classHours;
 
-    public NewViewCourseCard(String courseName, String instructorName, String classHours) {
+    public ViewCourseCard(int courseId, String courseName, String instructorName, String classHours) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.instructorName = instructorName;
+        this.classHours = classHours;
+    }
+
+    public ViewCourseCard(String courseName, String instructorName, String classHours) {
         this.courseName = courseName;
         this.instructorName = instructorName;
         this.classHours = classHours;
@@ -35,5 +43,13 @@ public class NewViewCourseCard {
 
     public void setClassHours(String classHours) {
         this.classHours = classHours;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 }
