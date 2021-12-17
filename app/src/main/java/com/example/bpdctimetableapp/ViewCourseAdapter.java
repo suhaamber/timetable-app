@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ViewCourseAdapter extends RecyclerView.Adapter<ViewCourseAdapter.NewCourseViewHolder> {
+public class ViewCourseAdapter extends RecyclerView.Adapter<ViewCourseAdapter.CourseViewHolder> {
 
     private ArrayList<ViewCourseCard> viewCourseCards;
     private OnItemClickListener mListener;
@@ -23,13 +23,13 @@ public class ViewCourseAdapter extends RecyclerView.Adapter<ViewCourseAdapter.Ne
         mListener = listener;
     }
 
-    public static class NewCourseViewHolder extends RecyclerView.ViewHolder {
+    public static class CourseViewHolder extends RecyclerView.ViewHolder {
         public TextView courseNameTV;
         public TextView instructorNameTV;
         public TextView classHoursTV;
         public TextView attendanceTV;
 
-        public NewCourseViewHolder(@NonNull View itemView, final OnItemClickListener listener, ArrayList<ViewCourseCard> viewCourseCards) {
+        public CourseViewHolder(@NonNull View itemView, final OnItemClickListener listener, ArrayList<ViewCourseCard> viewCourseCards) {
             super(itemView);
             courseNameTV = itemView.findViewById(R.id.course_name);
             instructorNameTV = itemView.findViewById(R.id.instructor_name);
@@ -57,14 +57,14 @@ public class ViewCourseAdapter extends RecyclerView.Adapter<ViewCourseAdapter.Ne
 
     @NonNull
     @Override
-    public ViewCourseAdapter.NewCourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_card, parent, false);
-        NewCourseViewHolder newCourseViewHolder = new NewCourseViewHolder(v, mListener, viewCourseCards);
-        return newCourseViewHolder;
+        CourseViewHolder courseViewHolder = new CourseViewHolder(v, mListener, viewCourseCards);
+        return courseViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewCourseAdapter.NewCourseViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         ViewCourseCard currentItem = viewCourseCards.get(position);
 
         holder.courseNameTV.setText(currentItem.getCourseName());

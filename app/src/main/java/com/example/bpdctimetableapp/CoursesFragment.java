@@ -37,7 +37,6 @@ public class CoursesFragment extends Fragment {
         //attach adapter and layout manager
         buildCourseRecyclerView();
 
-
         return rootView;
     }
 
@@ -61,8 +60,6 @@ public class CoursesFragment extends Fragment {
         viewCourseAdapter.setOnItemClickListener(new ViewCourseAdapter.OnItemClickListener() {
             @Override
             public void onCourseClick(int position, View view) {
-                //TODO: create a new activity to show course details
-                //create an intent and pass on the courseID
                 int courseId = viewCourseCards.get(position).getCourseId();
                 Intent intent = new Intent(getActivity(), CourseView.class);
                 intent.putExtra("COURSE_ID", courseId);

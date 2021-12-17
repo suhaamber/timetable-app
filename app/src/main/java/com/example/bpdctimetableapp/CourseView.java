@@ -29,8 +29,6 @@ public class CourseView extends Activity {
             }
         });
 
-        //TODO: figure out how to display toolbar (for better navigation)
-
         Intent newIntent = this.getIntent();
         Bundle extras = newIntent.getExtras();
         int courseId = extras.getInt("COURSE_ID");
