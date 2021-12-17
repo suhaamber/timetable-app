@@ -289,6 +289,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
     }
 
+    //returns class type, hour and day on giving course ID
+    public ArrayList<String> getTimetable(int courseId) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getTimetable = "SELECT " + COLUMN_CLASS_TYPE + ", " + COLUMN_CLASS_HOUR +
+                ", " + COLUMN_CLASS_DAY + " FROM " + TABLE_TIMETABLE + " WHERE " + COLUMN_COURSE_ID +
+                "=" + String.valueOf(courseId);
+        Cursor cursor = db.rawQuery(getTimetable, null);
+
+        ArrayList<String> timetableList = new ArrayList<>();
+        String classType = "";
+        int classHour = 0, classDay = 0;
+
+        if(cursor.moveToFirst()) {
+            do {
+                    classType = cursor.getString(0);
+                    classHour = cursor.getInt(1);
+                    classDay = cursor.getInt(2);
+
+                    String temp = classType + " " + classDayNumToString(classDay) + String.valueOf(classHour);
+                    timetableList.add(temp);
+
+            } while(cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+        return timetableList;
+    }
+
+    //returns all class type, hour and day of all courses
     public ArrayList<TimetableModel> getTimetable() {
         SQLiteDatabase db = this.getReadableDatabase();
         String getTimetable = "SELECT " + TABLE_COURSES + "." + COLUMN_COURSE_ID + ", " +
@@ -314,6 +345,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return timetableList;
+    }
+
+    //returns course details on giving course ID
+    public CourseModel getCourseName(int courseId) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getTimetable = "SELECT " + COLUMN_COURSE_NAME + ", " + COLUMN_INSTRUCTOR_NAME +
+                " FROM " + TABLE_COURSES + " WHERE " + COLUMN_COURSE_ID +
+                "=" + String.valueOf(courseId);
+        Cursor cursor = db.rawQuery(getTimetable, null);
+
+        CourseModel courseModel = null;
+        if(cursor.moveToFirst()) {
+            String courseName = cursor.getString(0);
+            String instructorName = cursor.getString(1);
+
+            courseModel = new CourseModel(courseId, courseName, instructorName);
+        }
+
+        db.close();
+        cursor.close();
+        return courseModel;
+    }
+
+    //returns evaluation details given a course ID
+    public ArrayList<String> getEvaluationDetails(int courseId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getTimetable = "SELECT " + COLUMN_EVALUATION_TYPE + ", " + COLUMN_EVALUATION_DATE +
+                " FROM " + TABLE_EVALUATION + " WHERE " + COLUMN_COURSE_ID +
+                "=" + String.valueOf(courseId);
+        Cursor cursor = db.rawQuery(getTimetable, null);
+
+        ArrayList<String> evaluation = new ArrayList<>();
+        if(cursor.moveToFirst()) {
+            do {
+                String evaluationType = cursor.getString(0);
+                String evaluationDate = cursor.getString(1);
+
+                evaluation.add(evaluationType + " " + evaluationDate);
+            } while(cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+        return evaluation;
     }
 
     public boolean addEvaluation(EvaluationModel evaluationModel) {

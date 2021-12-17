@@ -1,6 +1,7 @@
 package com.example.bpdctimetableapp;
 
 public class ClassDayHour {
+    private String classType;
     private int classHour;
     private int classDay;
 
@@ -9,8 +10,22 @@ public class ClassDayHour {
         this.classDay = classDay;
     }
 
+    public ClassDayHour(String classType, int classHour, int classDay) {
+        this.classHour = classHour;
+        this.classDay = classDay;
+        this.classType = classType;
+    }
+
     public ClassDayHour() {
 
+    }
+
+    public String getClassType() {
+        return classType;
+    }
+
+    public void setClassType(String classType) {
+        this.classType = classType;
     }
 
     public int getClassHour() {
