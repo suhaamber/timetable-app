@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,6 +45,14 @@ public class AddCourse extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_course);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         parentView = findViewById(R.id.parent_view);
         setDate = "";
