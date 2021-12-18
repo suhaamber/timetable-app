@@ -8,7 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_COURSE_NAME = "COURSE_NAME";
@@ -414,26 +417,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //returns schedule, sorted day-wise for home page
     //TODO: get today's date and day, and accordingly fetch schedule
-    public ArrayList<HomeData> getSchedule() {
+    public ArrayList<HomeData> getSchedule(String dayOfWeek) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
+        int startDay = 0;
+
+        switch (dayOfWeek) {
+            case "Sun": startDay = 1;
+                break;
+            case "Mon": startDay = 2;
+                break;
+            case "Tue": startDay = 3;
+                break;
+            case "Wed": startDay = 4;
+                break;
+            case "Thu": startDay = 5;
+                break;
+            case "Fri": startDay = 6;
+                break;
+            case "Sat": startDay = 0;
+                break;
+            default: startDay = 0;
+        }
+
         final int NUMBER_OF_WORKING_DAYS=5;
+        final int NUMBER_OF_DAYS_TO_SHOW = 14;
         ArrayList<HomeData> schedule = new ArrayList<HomeData>();
 
-        for (int day = 0; day < NUMBER_OF_WORKING_DAYS; day++) {
+        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy");
+        Calendar calendar = Calendar.getInstance();
+        String today = df.format(calendar.getTime());
+
+        for (int i = 0; i < 14; i++) {
             schedule.add(new HomeData());
             String getSchedule = "SELECT " + TABLE_COURSES + "." + COLUMN_COURSE_ID + ", " +
                     COLUMN_COURSE_NAME + ", " +
                     COLUMN_INSTRUCTOR_NAME + ", " + COLUMN_CLASS_TYPE + ", " + COLUMN_CLASS_HOUR +
                     " FROM " + TABLE_COURSES + " INNER JOIN " + TABLE_TIMETABLE + " WHERE " +
                     TABLE_COURSES + "." + COLUMN_COURSE_ID + " = " + TABLE_TIMETABLE + "." +
-                    COLUMN_COURSE_ID + " AND " + COLUMN_CLASS_DAY + "=" +  String.valueOf(day) +
+                    COLUMN_COURSE_ID + " AND " + COLUMN_CLASS_DAY + "=" +  String.valueOf(startDay-1) +
                     " ORDER BY " + COLUMN_CLASS_HOUR + " ASC";
+
             cursor = db.rawQuery(getSchedule, null);
+
+            calendar.add(Calendar.DAY_OF_YEAR, i>0?1:0);
+            String day = df.format(calendar.getTime());
+            schedule.get(i).setSectionDate(day);
 
             int courseId = 0, classHour = 0;
             String courseName = "", instructorName = "", classType = "";
-
             if(cursor.moveToFirst()) {
                 do {
                     courseId = cursor.getInt(0);
@@ -442,7 +474,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     classType = cursor.getString(3);
                     classHour = cursor.getInt(4);
 
-                    schedule.get(day).addHomeCards(
+                    schedule.get(i).addHomeCards(
                             new HomeCard(
                                     courseId,
                                     courseName,
@@ -451,6 +483,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 } while(cursor.moveToNext());
             }
+
+            startDay = (startDay + 1) % 7;
         }
 
         db.close();

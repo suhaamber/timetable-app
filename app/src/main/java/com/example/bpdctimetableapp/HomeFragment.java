@@ -14,8 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class HomeFragment extends Fragment {
@@ -25,6 +29,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<HomeData> homeDataArrayList;
     private RelativeLayout parentView;
+    private FloatingActionsMenu floatingActionsMenu;
 
     @Nullable
     @Override
@@ -33,10 +38,13 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         parentView = rootView.findViewById(R.id.parent_view);
 
+        floatingActionsMenu = rootView.findViewById(R.id.floating_actions_menu);
+
         FloatingActionButton fabCourses = rootView.findViewById(R.id.fab_courses);
         fabCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                floatingActionsMenu.collapse();
                 addCourse(v);
             }
         });
@@ -45,6 +53,7 @@ public class HomeFragment extends Fragment {
         fabReminders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                floatingActionsMenu.collapse();
                 addReminder(v);
             }
         });
@@ -53,6 +62,7 @@ public class HomeFragment extends Fragment {
         fabAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                floatingActionsMenu.collapse();
                 addAttendance(v);
             }
         });
@@ -71,13 +81,11 @@ public class HomeFragment extends Fragment {
 
     public void createCards() {
         DatabaseHelper db = new DatabaseHelper(HomeFragment.this.getContext());
-        homeDataArrayList = db.getSchedule();
-
-        homeDataArrayList.get(0).setSectionDate("Sunday");
-        homeDataArrayList.get(1).setSectionDate("Monday");
-        homeDataArrayList.get(2).setSectionDate("Tuesday");
-        homeDataArrayList.get(3).setSectionDate("Wednesday");
-        homeDataArrayList.get(4).setSectionDate("Thursday");
+        //get today's date and show timetable for 14 days from now
+        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy");
+        Calendar calendar = Calendar.getInstance();
+        String today = df.format(calendar.getTime());
+        homeDataArrayList = db.getSchedule(today.substring(0, 3));
 
     }
 
@@ -107,5 +115,4 @@ public class HomeFragment extends Fragment {
         Intent addAttendanceIntent = new Intent(getActivity(), AddAttendance.class);
         startActivity(addAttendanceIntent);
     }
-
 }

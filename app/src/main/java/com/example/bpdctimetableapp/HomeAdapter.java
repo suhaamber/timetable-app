@@ -20,11 +20,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     public static class HomeViewHolder extends RecyclerView.ViewHolder {
 
         private TextView sectionDateTV;
+        private TextView noClassTodayTV;
         private RecyclerView sectionRecyclerView;
 
         public HomeViewHolder(@NonNull View itemView) {
             super(itemView);
             sectionDateTV = itemView.findViewById(R.id.section_date);
+            noClassTodayTV = itemView.findViewById(R.id.no_class_today);
             sectionRecyclerView = itemView.findViewById(R.id.section_recycler_view);
         }
     }
@@ -57,6 +59,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         holder.sectionRecyclerView.setLayoutManager(layoutManager);
         holder.sectionRecyclerView.setAdapter(homeSectionAdapter);
         holder.sectionRecyclerView.setRecycledViewPool(viewPool);
+
+        //if no classes, show text view with no class today text
+        if(currentItem.getHomeCardsSize()==0) {
+            holder.noClassTodayTV.setVisibility(TextView.VISIBLE);
+        }
     }
 
     @Override
