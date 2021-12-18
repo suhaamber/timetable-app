@@ -1,5 +1,6 @@
 package com.example.bpdctimetableapp;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         holder.sectionRecyclerView.setLayoutManager(layoutManager);
         holder.sectionRecyclerView.setAdapter(homeSectionAdapter);
         holder.sectionRecyclerView.setRecycledViewPool(viewPool);
+
+        //implement card listener here
+        homeSectionAdapter.setOnItemClickListener(new HomeSectionAdapter.OnItemClickListener() {
+            @Override
+            public void onCardClick(int position, View view) {
+                int courseId = currentItem.getHomeCards().get(position).getCourseId();
+                Intent intent = new Intent(view.getContext(), CourseView.class);
+                intent.putExtra("COURSE_ID", courseId);
+                view.getContext().startActivity(intent);
+            }
+        });
 
         //if no classes, show text view with no class today text
         if(currentItem.getHomeCardsSize()==0) {

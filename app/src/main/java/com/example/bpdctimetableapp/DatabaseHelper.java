@@ -416,7 +416,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //returns schedule, sorted day-wise for home page
-    //TODO: get today's date and day, and accordingly fetch schedule
     public ArrayList<HomeData> getSchedule(String dayOfWeek) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;

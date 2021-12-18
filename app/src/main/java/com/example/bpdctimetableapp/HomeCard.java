@@ -13,6 +13,14 @@ public class HomeCard {
         this.classTiming = classTiming;
     }
 
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
     public String getCourseName() {
         return courseName;
     }

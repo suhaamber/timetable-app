@@ -97,8 +97,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(homeAdapter);
         recyclerView.setNestedScrollingEnabled(false);
-
-        //TODO: add listener for schedule cards
     }
 
     public void addCourse(View view) {
