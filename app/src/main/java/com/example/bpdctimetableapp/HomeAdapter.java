@@ -16,6 +16,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
     private ArrayList<HomeData> homeData;
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+    private RecyclerView.RecycledViewPool viewPool2 = new RecyclerView.RecycledViewPool();
     //no listener needed for parent recycler view
 
     public static class HomeViewHolder extends RecyclerView.ViewHolder {
@@ -23,12 +24,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         private TextView sectionDateTV;
         private TextView noClassTodayTV;
         private RecyclerView sectionRecyclerView;
+        private RecyclerView evalRecyclerView;
 
         public HomeViewHolder(@NonNull View itemView) {
             super(itemView);
             sectionDateTV = itemView.findViewById(R.id.section_date);
             noClassTodayTV = itemView.findViewById(R.id.no_class_today);
             sectionRecyclerView = itemView.findViewById(R.id.section_recycler_view);
+            evalRecyclerView = itemView.findViewById(R.id.eval_recycler_view);
         }
     }
 
@@ -53,19 +56,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
                 LinearLayoutManager.VERTICAL,
                 false);
 
-        layoutManager.setInitialPrefetchItemCount(currentItem.getHomeCardsSize());
+        layoutManager.setInitialPrefetchItemCount(currentItem.getHomeClassCardsSize());
 
-        HomeSectionAdapter homeSectionAdapter = new HomeSectionAdapter(
-                currentItem.getHomeCards());
+        HomeClassAdapter homeClassAdapter = new HomeClassAdapter(
+                currentItem.getHomeClassCards());
         holder.sectionRecyclerView.setLayoutManager(layoutManager);
-        holder.sectionRecyclerView.setAdapter(homeSectionAdapter);
+        holder.sectionRecyclerView.setAdapter(homeClassAdapter);
         holder.sectionRecyclerView.setRecycledViewPool(viewPool);
 
         //implement card listener here
-        homeSectionAdapter.setOnItemClickListener(new HomeSectionAdapter.OnItemClickListener() {
+        homeClassAdapter.setOnItemClickListener(new HomeClassAdapter.OnItemClickListener() {
             @Override
             public void onCardClick(int position, View view) {
-                int courseId = currentItem.getHomeCards().get(position).getCourseId();
+                int courseId = currentItem.getHomeClassCards().get(position).getCourseId();
                 Intent intent = new Intent(view.getContext(), CourseView.class);
                 intent.putExtra("COURSE_ID", courseId);
                 view.getContext().startActivity(intent);
@@ -73,9 +76,32 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         });
 
         //if no classes, show text view with no class today text
-        if(currentItem.getHomeCardsSize()==0) {
+        if(currentItem.getHomeClassCardsSize()==0) {
             holder.noClassTodayTV.setVisibility(TextView.VISIBLE);
         }
+
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(
+                holder.evalRecyclerView.getContext(),
+                LinearLayoutManager.VERTICAL,
+                false
+        );
+        layoutManager2.setInitialPrefetchItemCount(currentItem.getHomeEvalCardsSize());
+
+        HomeEvalAdapter homeEvalAdapter = new HomeEvalAdapter(currentItem.getHomeEvalCards());
+        holder.evalRecyclerView.setLayoutManager(layoutManager2);
+        holder.evalRecyclerView.setAdapter(homeEvalAdapter);
+        holder.evalRecyclerView.setRecycledViewPool(viewPool2);
+
+        //evaluation listener
+        homeEvalAdapter.setOnItemClickListener(new HomeEvalAdapter.OnItemClickListener() {
+            @Override
+            public void onCardClick(int position, View view) {
+                int courseId = currentItem.getHomeEvalCards().get(position).getCourseId();
+                Intent intent = new Intent(view.getContext(), CourseView.class);
+                intent.putExtra("COURSE_ID", courseId);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

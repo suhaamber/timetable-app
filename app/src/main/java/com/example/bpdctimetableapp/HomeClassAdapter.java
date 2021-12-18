@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class HomeSectionAdapter extends RecyclerView.Adapter<HomeSectionAdapter.HomeCardViewHolder> {
+public class HomeClassAdapter extends RecyclerView.Adapter<HomeClassAdapter.HomeClassCardViewHolder> {
 
-    private ArrayList<HomeCard> homeCards;
+    private ArrayList<HomeClassCard> homeClassCards;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
@@ -23,11 +23,11 @@ public class HomeSectionAdapter extends RecyclerView.Adapter<HomeSectionAdapter.
         mListener = listener;
     }
 
-    public static class HomeCardViewHolder extends RecyclerView.ViewHolder {
+    public static class HomeClassCardViewHolder extends RecyclerView.ViewHolder {
 
         public TextView courseNameTV, instructorNameTV, classTimingTV;
 
-        public HomeCardViewHolder(@NonNull View itemView, OnItemClickListener listener, ArrayList<HomeCard> homeCards) {
+        public HomeClassCardViewHolder(@NonNull View itemView, OnItemClickListener listener, ArrayList<HomeClassCard> homeClassCards) {
             super(itemView);
             //set ids to textviews in the card
             courseNameTV = itemView.findViewById(R.id.course_name);
@@ -48,21 +48,21 @@ public class HomeSectionAdapter extends RecyclerView.Adapter<HomeSectionAdapter.
         }
     }
 
-    public HomeSectionAdapter(ArrayList<HomeCard> homeCards) {
-        this.homeCards = homeCards;
+    public HomeClassAdapter(ArrayList<HomeClassCard> homeClassCards) {
+        this.homeClassCards = homeClassCards;
     }
 
     @NonNull
     @Override
-    public HomeCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_card, parent, false);
-        HomeCardViewHolder homeCardViewHolder = new HomeCardViewHolder(v, mListener, homeCards);
-        return homeCardViewHolder;
+    public HomeClassCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_class_card, parent, false);
+        HomeClassCardViewHolder homeClassCardViewHolder = new HomeClassCardViewHolder(v, mListener, homeClassCards);
+        return homeClassCardViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeCardViewHolder holder, int position) {
-        HomeCard currentItem = homeCards.get(position);
+    public void onBindViewHolder(@NonNull HomeClassCardViewHolder holder, int position) {
+        HomeClassCard currentItem = homeClassCards.get(position);
 
         //set text here
         holder.courseNameTV.setText(currentItem.getCourseName());
@@ -73,7 +73,7 @@ public class HomeSectionAdapter extends RecyclerView.Adapter<HomeSectionAdapter.
 
     @Override
     public int getItemCount() {
-        return homeCards.size();
+        return homeClassCards.size();
     }
 
 }

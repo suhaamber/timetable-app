@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_COURSE_NAME = "COURSE_NAME";
@@ -443,9 +444,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         final int NUMBER_OF_DAYS_TO_SHOW = 14;
         ArrayList<HomeData> schedule = new ArrayList<HomeData>();
 
-        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy");
+        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy", Locale.ENGLISH);
+        DateFormat dfEval = new SimpleDateFormat("d-M-yyyy", Locale.ENGLISH);
         Calendar calendar = Calendar.getInstance();
         String today = df.format(calendar.getTime());
+        String todayEval = dfEval.format(calendar.getTime());
 
         for (int i = 0; i < 14; i++) {
             schedule.add(new HomeData());
@@ -473,13 +476,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     classType = cursor.getString(3);
                     classHour = cursor.getInt(4);
 
-                    schedule.get(i).addHomeCards(
-                            new HomeCard(
+                    schedule.get(i).addHomeClassCards(
+                            new HomeClassCard(
                                     courseId,
                                     courseName,
                                     instructorName,
                                     classType + " in hour " + classHour));
 
+                } while(cursor.moveToNext());
+            }
+
+            String evalDate = dfEval.format(calendar.getTime());
+            String getEval = "SELECT " + TABLE_COURSES + "." + COLUMN_COURSE_ID + ", " +
+                    COLUMN_COURSE_NAME + ", " + COLUMN_EVALUATION_TYPE + " FROM " + TABLE_COURSES +
+                    " INNER JOIN " +
+                    TABLE_EVALUATION + " WHERE " + TABLE_COURSES + "." + COLUMN_COURSE_ID +
+                    "=" + TABLE_EVALUATION + "." + COLUMN_COURSE_ID + " AND " +
+                    COLUMN_EVALUATION_DATE + " LIKE \"" + evalDate + "\"";
+            cursor = db.rawQuery(getEval, null);
+
+            courseId = 0; courseName = "";
+            String evalType = "";
+            if(cursor.moveToFirst()) {
+                do {
+                    courseId = cursor.getInt(0);
+                    courseName = cursor.getString(1);
+                    evalType = cursor.getString(2);
+
+                    schedule.get(i).addHomeEvalCards(
+                            new HomeEvalCard(
+                                    courseId,
+                                    courseName,
+                                    evalType
+                            )
+                    );
                 } while(cursor.moveToNext());
             }
 

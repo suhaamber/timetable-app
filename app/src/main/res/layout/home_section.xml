@@ -17,6 +17,12 @@
         android:text="@string/no_class_today"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/eval_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/section_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

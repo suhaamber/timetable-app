@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class HomeData {
     private int id;
     private String sectionDate;
-    private ArrayList<HomeCard> homeCards;
+    private ArrayList<HomeClassCard> homeClassCards;
+    private ArrayList<HomeEvalCard> homeEvalCards;
 
     public HomeData() {
-        homeCards = new ArrayList<>();
+        homeClassCards = new ArrayList<>();
+        homeEvalCards = new ArrayList<>();
     }
 
     public String getSectionDate() {
@@ -19,15 +21,27 @@ public class HomeData {
         this.sectionDate = sectionDate;
     }
 
-    public ArrayList<HomeCard> getHomeCards() {
-        return homeCards;
+    public ArrayList<HomeClassCard> getHomeClassCards() {
+        return homeClassCards;
     }
 
-    public void addHomeCards(HomeCard homeCard) {
-        homeCards.add(homeCard);
+    public void addHomeClassCards(HomeClassCard homeClassCard) {
+        homeClassCards.add(homeClassCard);
     }
 
-    public int getHomeCardsSize() {
-        return homeCards.size();
+    public void addHomeEvalCards(HomeEvalCard homeEvalCard) {
+        homeEvalCards.add(homeEvalCard);
+    }
+
+    public ArrayList<HomeEvalCard> getHomeEvalCards() {
+        return homeEvalCards;
+    }
+
+    public int getHomeClassCardsSize() {
+        return homeClassCards.size();
+    }
+
+    public int getHomeEvalCardsSize() {
+        return homeEvalCards.size();
     }
 }

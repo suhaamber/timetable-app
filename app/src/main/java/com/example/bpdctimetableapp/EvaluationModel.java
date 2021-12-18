@@ -12,10 +12,6 @@ public class EvaluationModel {
         this.evaluationDate = evaluationDate;
     }
 
-    public EvaluationModel() {
-    //default constructor
-    }
-
     public int getCourseId() {
         return courseId;
     }

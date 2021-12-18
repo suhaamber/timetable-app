@@ -34,7 +34,6 @@ public class AddCourse extends Activity {
     private ArrayList<NewCourseCard> newCourseCards;
     private ArrayList<NewEvalCard> newEvalCards;
     private ImageButton addCourseCard, addEvalCard;
-    private String setDate;
     private PopupWindow selectHoursPopup;
     private NestedScrollView parentView;
     private Button addCourse;
@@ -55,7 +54,7 @@ public class AddCourse extends Activity {
         });
 
         parentView = findViewById(R.id.parent_view);
-        setDate = "";
+        String setDate = "";
 
         newCourseCards = new ArrayList<>();
         buildCourseRecyclerView();
@@ -190,7 +189,7 @@ public class AddCourse extends Activity {
                                 CheckBox checkBox = selectClassPopup.findViewById(classHoursIds.ids.get(dayCount).get(hourCount));
                                 if (checkBox.isChecked()) {
                                     temp = new ClassDayHour(hourCount+1, dayCount);
-                                    textViewString += dayToDayName(dayCount) + String.valueOf(hourCount+1) + " ";
+                                    textViewString += dayToDayName(dayCount) + hourCount+1 + " ";
                                     AddCourse.this.newCourseCards.get(this_position).addClassDayHours(temp);
                                 }
                             }

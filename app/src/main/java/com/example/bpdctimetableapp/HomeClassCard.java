@@ -1,12 +1,12 @@
 package com.example.bpdctimetableapp;
 
-public class HomeCard {
+public class HomeClassCard {
     private int courseId;
     private String courseName;
     private String instructorName;
     private String classTiming;
 
-    public HomeCard(int courseId, String courseName, String instructorName, String classTiming) {
+    public HomeClassCard(int courseId, String courseName, String instructorName, String classTiming) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.instructorName = instructorName;
