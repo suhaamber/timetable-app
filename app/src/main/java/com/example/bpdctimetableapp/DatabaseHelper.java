@@ -411,4 +411,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else
             return true;
     }
+
+    //returns schedule, sorted day-wise for home page
+    //TODO: get today's date and day, and accordingly fetch schedule
+    public ArrayList<HomeData> getSchedule() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        final int NUMBER_OF_WORKING_DAYS=5;
+        ArrayList<HomeData> schedule = new ArrayList<HomeData>();
+
+        for (int day = 0; day < NUMBER_OF_WORKING_DAYS; day++) {
+            schedule.add(new HomeData());
+            String getSchedule = "SELECT " + TABLE_COURSES + "." + COLUMN_COURSE_ID + ", " +
+                    COLUMN_COURSE_NAME + ", " +
+                    COLUMN_INSTRUCTOR_NAME + ", " + COLUMN_CLASS_TYPE + ", " + COLUMN_CLASS_HOUR +
+                    " FROM " + TABLE_COURSES + " INNER JOIN " + TABLE_TIMETABLE + " WHERE " +
+                    TABLE_COURSES + "." + COLUMN_COURSE_ID + " = " + TABLE_TIMETABLE + "." +
+                    COLUMN_COURSE_ID + " AND " + COLUMN_CLASS_DAY + "=" +  String.valueOf(day) +
+                    " ORDER BY " + COLUMN_CLASS_HOUR + " ASC";
+            cursor = db.rawQuery(getSchedule, null);
+
+            int courseId = 0, classHour = 0;
+            String courseName = "", instructorName = "", classType = "";
+
+            if(cursor.moveToFirst()) {
+                do {
+                    courseId = cursor.getInt(0);
+                    courseName = cursor.getString(1);
+                    instructorName = cursor.getString(2);
+                    classType = cursor.getString(3);
+                    classHour = cursor.getInt(4);
+
+                    schedule.get(day).addHomeCards(
+                            new HomeCard(
+                                    courseId,
+                                    courseName,
+                                    instructorName,
+                                    classType + " in hour " + classHour));
+
+                } while(cursor.moveToNext());
+            }
+        }
+
+        db.close();
+        cursor.close();
+        return schedule;
+    }
 }

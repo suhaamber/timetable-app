@@ -25,7 +25,7 @@ public class TimetableFragment extends Fragment {
         DatabaseHelper db = new DatabaseHelper(this.getContext());
         ArrayList<TimetableModel> timetableList = db.getTimetable();
         for(TimetableModel timetable: timetableList) {
-            TextView temp = rootView.findViewById(ids.get(timetable.getClassDay()).get(timetable.getClassHour()));
+            TextView temp = rootView.findViewById(ids.get(timetable.getClassDay()).get(timetable.getClassHour()-1));
             String className = timetable.getCourseName() + "\n" + timetable.getClassType();
             temp.setText(className);
 

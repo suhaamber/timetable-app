@@ -57,8 +57,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+
         //create cards
-        //accesse database and create cards
+        //access database and create cards
         createCards();
 
         //attach adapter and build recycler view
@@ -70,6 +72,12 @@ public class HomeFragment extends Fragment {
     public void createCards() {
         DatabaseHelper db = new DatabaseHelper(HomeFragment.this.getContext());
         homeDataArrayList = db.getSchedule();
+
+        homeDataArrayList.get(0).setSectionDate("Sunday");
+        homeDataArrayList.get(1).setSectionDate("Monday");
+        homeDataArrayList.get(2).setSectionDate("Tuesday");
+        homeDataArrayList.get(3).setSectionDate("Wednesday");
+        homeDataArrayList.get(4).setSectionDate("Thursday");
 
     }
 

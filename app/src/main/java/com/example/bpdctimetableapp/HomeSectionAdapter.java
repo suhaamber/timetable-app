@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class HomeSectionAdapter extends RecyclerView.Adapter<HomeSectionAdapter.HomeCardViewHolder> {
 
-    private ArrayList<HomeData.HomeCard> homeCards;
+    private ArrayList<HomeCard> homeCards;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
@@ -27,7 +27,7 @@ public class HomeSectionAdapter extends RecyclerView.Adapter<HomeSectionAdapter.
 
         public TextView courseNameTV, instructorNameTV, classTimingTV;
 
-        public HomeCardViewHolder(@NonNull View itemView, OnItemClickListener listener, ArrayList<HomeData.HomeCard> homeCards) {
+        public HomeCardViewHolder(@NonNull View itemView, OnItemClickListener listener, ArrayList<HomeCard> homeCards) {
             super(itemView);
             //set ids to textviews in the card
             courseNameTV = itemView.findViewById(R.id.course_name);
@@ -48,7 +48,7 @@ public class HomeSectionAdapter extends RecyclerView.Adapter<HomeSectionAdapter.
         }
     }
 
-    public HomeSectionAdapter(ArrayList<HomeData.HomeCard> homeCards) {
+    public HomeSectionAdapter(ArrayList<HomeCard> homeCards) {
         this.homeCards = homeCards;
     }
 
@@ -62,7 +62,7 @@ public class HomeSectionAdapter extends RecyclerView.Adapter<HomeSectionAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull HomeCardViewHolder holder, int position) {
-        HomeData.HomeCard currentItem = homeCards.get(position);
+        HomeCard currentItem = homeCards.get(position);
 
         //set text here
         holder.courseNameTV.setText(currentItem.getCourseName());
